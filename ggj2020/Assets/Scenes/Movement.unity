@@ -1706,6 +1706,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3403927437986650033, guid: dbc4cbb8e017031449104a62672f31aa,
+        type: 3}
+      propertyPath: JumpBoost
+      value: 
+      objectReference: {fileID: 11400000, guid: 991da1d90c90bf240ad221fb01559bfa,
+        type: 2}
     - target: {fileID: 3403927437986650036, guid: dbc4cbb8e017031449104a62672f31aa,
         type: 3}
       propertyPath: m_Name
@@ -2333,6 +2339,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3403927437986650033, guid: dbc4cbb8e017031449104a62672f31aa,
+        type: 3}
+      propertyPath: JumpBoost
+      value: 
+      objectReference: {fileID: 11400000, guid: 991da1d90c90bf240ad221fb01559bfa,
+        type: 2}
     - target: {fileID: 3403927437986650036, guid: dbc4cbb8e017031449104a62672f31aa,
         type: 3}
       propertyPath: m_Name
