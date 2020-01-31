@@ -14,12 +14,14 @@ public class PlayerController : MonoBehaviour
     private bool _isGrounded;
     private Rigidbody _body;
     private SpriteRenderer _sprite;
+    private Animator _anim;
 
     // Start is called before the first frame update
     void Start()
     {
         _body = GetComponent<Rigidbody>();
         _sprite = GetComponent<SpriteRenderer>();
+        _anim = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -42,10 +44,16 @@ public class PlayerController : MonoBehaviour
         if(hort > 0)
         {
             _sprite.flipX = false;
+            _anim.SetBool("Walk", true);
         }
         else if(hort < 0)
         {
             _sprite.flipX = true;
+            _anim.SetBool("Walk", true);
+        }
+        else
+        {
+            _anim.SetBool("Walk", false);
         }
 
     }
