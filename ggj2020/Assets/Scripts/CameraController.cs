@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown("e") && CurrentRoom < RoomCount)
+        if(Input.GetKeyDown("e") && CurrentRoom < RoomCount - 1)
         {
             _targetPos += RoomOffset;
             CurrentRoom++;

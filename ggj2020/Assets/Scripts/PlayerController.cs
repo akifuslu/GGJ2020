@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    
+
+    public int RoomCount;
+    public int CurrentRoom;
+    public float RoomOffset;
     public float MoveScalar;
     public float JumpScalar;
     public float FallScalar;
     public Transform[] GroundPivots;
-    public FloatReference JumpBoost;
 
     private bool _isGrounded;
     private Rigidbody _body;
@@ -25,6 +27,20 @@ public class PlayerController : MonoBehaviour
         _anim = GetComponent<Animator>();
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown("e") && CurrentRoom < RoomCount - 1)
+        {
+            transform.position = new Vector3(transform.position.x + RoomOffset, transform.position.y, transform.position.z);
+            CurrentRoom++;
+        }
+        else if (Input.GetKeyDown("q") && CurrentRoom > 0)
+        {
+            transform.position = new Vector3(transform.position.x - RoomOffset, transform.position.y, transform.position.z);
+            CurrentRoom--;
+        }
+    }
+
     void FixedUpdate()
     {
         _isGrounded = CheckGrounded();
@@ -33,7 +49,7 @@ public class PlayerController : MonoBehaviour
         velocity.x = hort * MoveScalar;
         if(Input.GetKey("w") && _isGrounded)
         {
-            velocity.y = JumpScalar * JumpBoost.Value;
+            velocity.y = JumpScalar;
         }
         if(!_isGrounded && velocity.y < 0)
         {
@@ -69,21 +85,5 @@ public class PlayerController : MonoBehaviour
             }
         }
         return false;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Tramboline"))
-        {
-            JumpBoost.Value = 1.5f;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Tramboline"))
-        {
-            JumpBoost.Value = 1f;
-        }
     }
 }
