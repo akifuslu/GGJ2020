@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public float JumpScalar;
     public float FallScalar;
     public Transform[] GroundPivots;
+    public FloatReference JumpBoost;
 
     private bool _isGrounded;
     private Rigidbody _body;
@@ -32,7 +33,7 @@ public class PlayerController : MonoBehaviour
         velocity.x = hort * MoveScalar;
         if(Input.GetKey("w") && _isGrounded)
         {
-            velocity.y = JumpScalar;
+            velocity.y = JumpScalar * JumpBoost.Value;
         }
         if(!_isGrounded && velocity.y < 0)
         {
@@ -68,5 +69,21 @@ public class PlayerController : MonoBehaviour
             }
         }
         return false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Tramboline"))
+        {
+            JumpBoost.Value = 1.5f;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Tramboline"))
+        {
+            JumpBoost.Value = 1f;
+        }
     }
 }
