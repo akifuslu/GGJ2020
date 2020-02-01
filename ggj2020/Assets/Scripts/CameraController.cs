@@ -27,11 +27,13 @@ public class CameraController : MonoBehaviour
         {
             _targetPos += RoomOffset;
             CurrentRoom.Value++;
+            MessageBroker.Default.Publish(new ChaosEvent() { Amount = 5});
         }
         else if(Input.GetKeyDown("q") && CurrentRoom.Value > 0)
         {
             _targetPos -= RoomOffset;
             CurrentRoom.Value--;
+            MessageBroker.Default.Publish(new ChaosEvent() { Amount = 5 });
         }
         
         transform.position = new Vector3(Mathf.Lerp(transform.position.x, _targetPos, Time.deltaTime * 5), transform.position.y, transform.position.z);

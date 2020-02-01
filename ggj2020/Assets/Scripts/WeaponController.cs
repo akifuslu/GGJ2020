@@ -107,6 +107,7 @@ public class WeaponController : MonoBehaviour
             Invoke("ShootBoolFalseSetter", upTime);
             Invoke("ActiveGunCloser", upTime);
             Invoke("GunActiveBoolFalse", upTime);
+            MessageBroker.Default.Publish(new ChaosEvent() { Amount = 20 });
         }
     }
 

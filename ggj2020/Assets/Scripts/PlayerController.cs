@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown("x"))
         {
             MessageBroker.Default.Publish(new XRayEvent() { CurRoom = CurrentRoom });
+            MessageBroker.Default.Publish(new ChaosEvent() { Amount = 35 });
         }
 
         if (transform.position.y < 0) // fallen
@@ -62,7 +63,7 @@ public class PlayerController : MonoBehaviour
         float hort = Input.GetAxis("Horizontal");
         var velocity = _body.velocity;
         velocity.x = hort * MoveScalar;
-        if((Input.GetKey("space")||Input.GetKey("w")&& _isGrounded))
+        if((Input.GetKey("space")||Input.GetKey("w")) && _isGrounded)
         {
             velocity.y = JumpScalar;
         }
