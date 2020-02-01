@@ -923,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf75243909a66ca43903796ffaf30969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoomCount: 4
+  RoomCount: 2
   CurrentRoom:
     value: 0
   RoomOffset: 20
