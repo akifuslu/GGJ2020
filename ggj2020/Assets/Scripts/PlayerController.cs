@@ -93,6 +93,14 @@ public class PlayerController : MonoBehaviour
         }
         return false;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Spike"))
+        {
+            MessageBroker.Default.Publish(new PlayerDamagedEvent());
+        }
+    }
 }
 
 public class PlayerDamagedEvent

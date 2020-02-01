@@ -33,6 +33,7 @@ public class Level : MonoBehaviour
             if (_counter != CollectCount)
                 return;
 
+            _player.GetComponent<PlayerController>().enabled = false;
             _camera.enabled = false;
             var target = ev.Crack.position;
             target.y = transform.position.y;
