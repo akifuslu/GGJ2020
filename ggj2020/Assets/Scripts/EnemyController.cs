@@ -44,4 +44,9 @@ public class EnemyController : MonoBehaviour
             if (_cur == Waypoints.Count) _cur = 0;
         }
     }
+
+    private void OnDestroy()
+    {
+        _d.Dispose();
+    }
 }

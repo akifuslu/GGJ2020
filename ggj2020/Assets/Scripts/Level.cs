@@ -10,7 +10,8 @@ public class Level : MonoBehaviour
     public int CollectCount;
     public IntReactiveProperty Health;
     public IntReactiveProperty Counter = new IntReactiveProperty(0);
-    
+    public IntReactiveProperty Chaos = new IntReactiveProperty(0);
+
     private Vector3 _startPos;
     private Transform _player;
     private CameraController _camera;
