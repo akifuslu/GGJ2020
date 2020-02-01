@@ -49,4 +49,12 @@ public class EnemyController : MonoBehaviour
     {
         _d?.Dispose();
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bullet"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

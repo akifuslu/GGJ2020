@@ -427,6 +427,7 @@ MonoBehaviour:
   MoveScalar: 5
   JumpScalar: 7
   FallScalar: 0.3
+  Search: {fileID: 1456532198274850343, guid: 065d95b332ea07946a3669f9cc520a59, type: 3}
   GroundPivots:
   - {fileID: 3403927436690909065}
   - {fileID: 3403927437236403355}

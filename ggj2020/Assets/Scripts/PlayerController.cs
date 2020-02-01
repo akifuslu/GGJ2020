@@ -14,12 +14,14 @@ public class PlayerController : MonoBehaviour
     public float MoveScalar;
     public float JumpScalar;
     public float FallScalar;
+    public GameObject Search;
     public Transform[] GroundPivots;
 
     private bool _isGrounded;
     private Rigidbody2D _body;
     private SpriteRenderer _sprite;
     private Animator _anim;
+    private bool _onXray;
 
     // Start is called before the first frame update
     void Start()
@@ -42,10 +44,14 @@ public class PlayerController : MonoBehaviour
             CurrentRoom--;
         }
 
-        if(Input.GetKeyDown("x"))
+        if(Input.GetKeyDown("x") && !_onXray)
         {
+            _onXray = true;
+            var go = Instantiate(Search);
+            go.transform.position = transform.position;
             MessageBroker.Default.Publish(new XRayEvent() { CurRoom = CurrentRoom });
             MessageBroker.Default.Publish(new ChaosEvent() { Amount = 35 });
+            Observable.Timer(TimeSpan.FromSeconds(2f)).Subscribe(ev => { _onXray = false; Destroy(go.gameObject); });
         }
 
         if (transform.position.y < 0) // fallen
