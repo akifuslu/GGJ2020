@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,6 +40,11 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x - RoomOffset, transform.position.y, transform.position.z);
             CurrentRoom--;
+        }
+
+        if(transform.position.y < 0) // fallen
+        {
+            MessageBroker.Default.Publish(new PlayerDamagedEvent());
         }
     }
 
@@ -86,4 +93,9 @@ public class PlayerController : MonoBehaviour
         }
         return false;
     }
+}
+
+public class PlayerDamagedEvent
+{
+
 }
