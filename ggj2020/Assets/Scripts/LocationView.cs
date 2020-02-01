@@ -5,28 +5,33 @@ using System.Collections.Generic;
 public class LocationView : MonoBehaviour
 {
 
-    public GameObject LocationSlot;
+    public GameObject StartLocationSlot;
+    public GameObject MidLocationSlot;
+    public GameObject EndLocationSlot;
     public GameObject LocationConnector;
-    public GameObject PlayerIndicator;
 
     private List<Transform> _slots;
-    private Transform _indicator;
 
     public void Bind(CameraController controller)
     {
         _slots = new List<Transform>();
-        for(int i = 0; i < controller.RoomCount; i++)
+
+        _slots.Add(Instantiate(StartLocationSlot, transform).transform);
+        Instantiate(LocationConnector, transform);
+        for (int i = 1; i < controller.RoomCount - 1; i++)
         {
-            _slots.Add(Instantiate(LocationSlot, transform).transform);
-            if (i != controller.RoomCount - 1)
-                Instantiate(LocationConnector, transform);
+            _slots.Add(Instantiate(MidLocationSlot, transform).transform);
+            Instantiate(LocationConnector, transform);
         }
-        _indicator = Instantiate(PlayerIndicator).transform;
+        _slots.Add(Instantiate(EndLocationSlot, transform).transform);
+
         controller.CurrentRoom.Subscribe(cur =>
         {
-            _indicator.transform.SetParent(_slots[cur]);
-            _indicator.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
-            _indicator.transform.localScale = Vector3.one;
+            foreach (var slot in _slots)
+            {
+                slot.GetChild(0).gameObject.SetActive(false);
+            }
+            _slots[cur].GetChild(0).gameObject.SetActive(true);
         });   
     }
 }

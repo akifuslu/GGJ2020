@@ -923,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf75243909a66ca43903796ffaf30969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoomCount: 2
+  RoomCount: 4
   CurrentRoom:
     value: 0
   RoomOffset: 20
@@ -1881,6 +1881,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2624541862447514552, guid: dbc4cbb8e017031449104a62672f31aa,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2663172683406415246, guid: dbc4cbb8e017031449104a62672f31aa,
         type: 3}
       propertyPath: m_Controller

@@ -386,7 +386,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f4a49e66b8b264d8e1c6c512ef629b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocationSlot: {fileID: 2069062328042750571, guid: c99dfe6a6d8db474daec94e2011df1ba,
+  StartLocationSlot: {fileID: 2069062328042750571, guid: c99dfe6a6d8db474daec94e2011df1ba,
+    type: 3}
+  MidLocationSlot: {fileID: 2069062328042750571, guid: 1564d065cf371544caa9d5251a9a8c66,
+    type: 3}
+  EndLocationSlot: {fileID: 2069062328042750571, guid: f2cbdfc0fe64a5d45b908e78ec21675b,
     type: 3}
   LocationConnector: {fileID: 4295597890259251842, guid: 63c615adaabd7624bad41e72b035bd3e,
     type: 3}
