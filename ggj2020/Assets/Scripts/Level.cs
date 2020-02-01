@@ -14,6 +14,10 @@ public class Level : MonoBehaviour
     private Vector3 _startPos;
     private Transform _player;
     private CameraController _camera;
+    private IDisposable _d;
+    private IDisposable _d1;
+    private IDisposable _d2;
+    private IDisposable _d3;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +28,12 @@ public class Level : MonoBehaviour
         _startPos = _player.transform.position;
         FindObjectOfType<HealthView>().Bind(this);
         FindObjectOfType<ShardView>().Bind(this);
-        MessageBroker.Default.Receive<CollectedEvent>().Subscribe(ev => 
+        _d1 = MessageBroker.Default.Receive<CollectedEvent>().Subscribe(ev => 
         {
             Counter.Value++;
         });
 
-        MessageBroker.Default.Receive<RepairCrackEvent>().Subscribe(ev =>
+        _d2 = MessageBroker.Default.Receive<RepairCrackEvent>().Subscribe(ev =>
         {
             if (Counter.Value != CollectCount)
                 return;
@@ -39,7 +43,7 @@ public class Level : MonoBehaviour
             var target = ev.Crack.position;
             target.y = transform.position.y;
             target.z = transform.position.z;
-            Observable.EveryUpdate().Subscribe(up => 
+            _d = Observable.EveryUpdate().Subscribe(up => 
             {
                 transform.position = Vector3.Slerp(transform.position, target, Time.deltaTime);
                 Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 2, Time.deltaTime);
@@ -47,10 +51,11 @@ public class Level : MonoBehaviour
             Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(ti =>
             {
                 ev.Crack.GetComponent<SpriteRenderer>().sprite = ev.Fixed;
+                _d.Dispose();
             });
         });
 
-        MessageBroker.Default.Receive<PlayerDamagedEvent>().Subscribe(ev =>
+        _d3 = MessageBroker.Default.Receive<PlayerDamagedEvent>().Subscribe(ev =>
         {
             Health.Value--;
             if(Health.Value <= 0)
@@ -65,5 +70,12 @@ public class Level : MonoBehaviour
                 _player.GetComponent<PlayerController>().Reset();
             }
         });
-    }    
+    }
+
+    private void OnDestroy()
+    {
+        _d1?.Dispose();
+        _d2?.Dispose();
+        _d3?.Dispose();
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UniRx;
 using System.Collections.Generic;
+using System;
 
 public class LocationView : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class LocationView : MonoBehaviour
     public GameObject LocationConnector;
 
     private List<Transform> _slots;
+    private IDisposable _d;
 
     public void Bind(CameraController controller)
     {
@@ -25,7 +27,7 @@ public class LocationView : MonoBehaviour
         }
         _slots.Add(Instantiate(EndLocationSlot, transform).transform);
 
-        controller.CurrentRoom.Subscribe(cur =>
+        _d = controller.CurrentRoom.Subscribe(cur =>
         {
             foreach (var slot in _slots)
             {
@@ -33,5 +35,10 @@ public class LocationView : MonoBehaviour
             }
             _slots[cur].GetChild(0).gameObject.SetActive(true);
         });   
+    }
+
+    private void OnDestroy()
+    {
+        _d?.Dispose();
     }
 }

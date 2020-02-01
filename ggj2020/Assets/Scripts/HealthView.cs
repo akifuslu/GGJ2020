@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UnityEngine.UI;
+using System;
 
 public class HealthView : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class HealthView : MonoBehaviour
 
     [SerializeField]
     private List<Image> _hearts;
+    private IDisposable _d;
 
     public void Bind(Level level)
     {
@@ -21,7 +23,7 @@ public class HealthView : MonoBehaviour
         }
         _hearts.RemoveAt(0);
 
-        level.Health.Subscribe(ev => 
+        _d = level.Health.Subscribe(ev => 
         {
             if(ev < _hearts.Count && _hearts.Count > 0 && ev>=0)
             {
@@ -46,5 +48,10 @@ public class HealthView : MonoBehaviour
         }
         img.gameObject.SetActive((sign>0)? true:false);
         img.fillAmount = 1.0f;
+    }
+
+    private void OnDestroy()
+    {
+        _d?.Dispose();
     }
 }
