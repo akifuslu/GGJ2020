@@ -2,33 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using UnityEngine.UI;
 
 public class HealthView : MonoBehaviour
 {
 
     public GameObject HealthIcon;
 
-    private List<GameObject> _icons;
+    [SerializeField]
+    private List<Image> _hearts;
 
     public void Bind(Level level)
     {
-        _icons = new List<GameObject>();
-        for (int i = 0; i < level.Health.Value; i++)
+        _hearts = new List<Image>();
+        foreach(Image img in gameObject.GetComponentsInChildren<Image>())
         {
-            _icons.Add(Instantiate(HealthIcon, transform));
+            _hearts.Add(img);
         }
+        _hearts.RemoveAt(0);
 
         level.Health.Subscribe(ev => 
         {
-            if(ev < _icons.Count && _icons.Count > 0)
+            if(ev < _hearts.Count && _hearts.Count > 0 && ev>=0)
             {
-                Destroy(_icons[0]);
-                _icons.RemoveAt(0);
+
+                StartCoroutine( heartFillAmount(_hearts[ev], -1) );
             }
-            else if(ev > _icons.Count)
+            else if(ev > _hearts.Count)
             {
-                _icons.Add(Instantiate(HealthIcon, transform));
+                StartCoroutine(heartFillAmount(_hearts[ev], 1));
+
             }
         });
+    }
+
+    IEnumerator heartFillAmount(Image img, int sign)
+    {
+        while(img.fillAmount!=0)
+        {
+            img.fillAmount += sign*0.5f*Time.deltaTime;
+            yield return null;
+
+        }
+        img.gameObject.SetActive((sign>0)? true:false);
+        img.fillAmount = 1.0f;
     }
 }

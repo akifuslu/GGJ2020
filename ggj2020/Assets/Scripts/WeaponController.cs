@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UniRx;
 public class WeaponController : MonoBehaviour
 {
     public Transform gunRight;
@@ -97,7 +97,7 @@ public class WeaponController : MonoBehaviour
     void Shoot()
     {
         playerAnimator.SetBool("Shoot", true);
-        
+
         if (gunActive == false )
         {
             activeGun.gameObject.SetActive(true);

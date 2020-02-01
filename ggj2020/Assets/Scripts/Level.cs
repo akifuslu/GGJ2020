@@ -55,7 +55,7 @@ public class Level : MonoBehaviour
             if(Health.Value <= 0)
             {
                 Debug.Log("GAME LOST");
-                Time.timeScale = 0;
+                //Time.timeScale = 0;
             }
             else
             {

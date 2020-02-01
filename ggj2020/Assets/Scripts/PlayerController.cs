@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
             CurrentRoom--;
         }
 
-        if(transform.position.y < 0) // fallen
+        if (transform.position.y < 0) // fallen
         {
             MessageBroker.Default.Publish(new PlayerDamagedEvent());
         }
@@ -54,23 +54,23 @@ public class PlayerController : MonoBehaviour
         float hort = Input.GetAxis("Horizontal");
         var velocity = _body.velocity;
         velocity.x = hort * MoveScalar;
-        if(Input.GetKey("w") && _isGrounded)
+        if (Input.GetKey("w") && _isGrounded)
         {
             velocity.y = JumpScalar;
         }
-        if(!_isGrounded && velocity.y < 0)
+        if (!_isGrounded && velocity.y < 0)
         {
             velocity.y -= FallScalar;
         }
         _body.velocity = velocity;
 
         //set character facing side
-        if(hort > 0)
+        if (hort > 0)
         {
             _sprite.flipX = false;
             _anim.SetBool("Walk", true);
         }
-        else if(hort < 0)
+        else if (hort < 0)
         {
             _sprite.flipX = true;
             _anim.SetBool("Walk", true);
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
     private bool CheckGrounded()
     {
-        for(int i = 0; i < GroundPivots.Length; i++)
+        for (int i = 0; i < GroundPivots.Length; i++)
         {
             if (Physics2D.Raycast(GroundPivots[i].position, Vector3.down, 0.5f))
             {
@@ -102,8 +102,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
-
-public class PlayerDamagedEvent
+    public class PlayerDamagedEvent
 {
 
 }
