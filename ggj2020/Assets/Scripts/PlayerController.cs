@@ -42,6 +42,11 @@ public class PlayerController : MonoBehaviour
             CurrentRoom--;
         }
 
+        if(Input.GetKeyDown("x"))
+        {
+            MessageBroker.Default.Publish(new XRayEvent() { CurRoom = CurrentRoom });
+        }
+
         if (transform.position.y < 0) // fallen
         {
             MessageBroker.Default.Publish(new PlayerDamagedEvent());
@@ -110,7 +115,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
-    public class PlayerDamagedEvent
+
+public class PlayerDamagedEvent
 {
 
+}
+
+public class XRayEvent
+{
+    public int CurRoom;
 }
