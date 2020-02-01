@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 37da456d7ccc1044081ee9356de7ba75
+<<<<<<< Updated upstream:ggj2020/Assets/Sprites/STEAMPUNK_SONN.png.meta
+guid: 503dfd8de99eb114c9900e042446625d
+=======
+guid: 7525dae7803a3a34ab72aa505962a797
+>>>>>>> Stashed changes:ggj2020/Assets/Sprites/STEAMPUNK_SONN 1.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -63,7 +67,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -75,7 +79,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
