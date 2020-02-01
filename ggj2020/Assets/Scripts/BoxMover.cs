@@ -9,7 +9,9 @@ public class BoxMover : MonoBehaviour
     int speedY;
     int xConstraint;
     int n_xConstraint;
+    [SerializeField]
     int yConstraint;
+    [SerializeField]
     int n_yConstraint;
     public GameObject parentObj;
 
@@ -76,12 +78,13 @@ public class BoxMover : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Collision detected");
-        if(collision.gameObject.tag!="player")
+        if(collision.gameObject.tag!="Player")
         {
             speedX *= -1;
             speedY*=-1;
         }
-        if(collision.gameObject.tag=="player"&&collision.gameObject.transform.position.y<gameObject.transform.position.y)
+        if(collision.gameObject.tag=="Player" && Camera.main.ScreenToWorldPoint(collision.gameObject.transform.position).y
+            < Camera.main.ScreenToWorldPoint(gameObject.transform.position).y)
         {
             speedY *= -1;
         }
