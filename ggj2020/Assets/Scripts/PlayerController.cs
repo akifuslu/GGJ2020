@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
         float hort = Input.GetAxis("Horizontal");
         var velocity = _body.velocity;
         velocity.x = hort * MoveScalar;
-        if(Input.GetKey("space") && _isGrounded)
+        if((Input.GetKey("space")||Input.GetKey("w")&& _isGrounded))
         {
             velocity.y = JumpScalar;
         }
