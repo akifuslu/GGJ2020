@@ -29,6 +29,7 @@ public class WeaponController : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         gunActive = false;
         activeGun = gunRight;
+        activeFirePoint = firePointRight;
     }
 
     void Update()
@@ -102,7 +103,24 @@ public class WeaponController : MonoBehaviour
             activeGun.gameObject.SetActive(true);
             gunActive = true;
             Instantiate(bulletPrefab, activeFirePoint.position, activeFirePoint.rotation);
-            gunActive = false;
+            Invoke("ShootBoolFalseSetter", 2.0f);
+            Invoke("ActiveGunCloser", 2.0f);
+            Invoke("GunActiveBoolFalse", 2.0f);
         }
+    }
+
+    void ShootBoolFalseSetter()
+    {
+        playerAnimator.SetBool("Shoot", false);
+    }
+
+    void ActiveGunCloser()
+    {
+        activeGun.gameObject.SetActive(false);
+    }
+
+    void GunActiveBoolFalse()
+    {
+        gunActive = false;
     }
 }
