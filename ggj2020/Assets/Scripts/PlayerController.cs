@@ -17,14 +17,14 @@ public class PlayerController : MonoBehaviour
     public Transform[] GroundPivots;
 
     private bool _isGrounded;
-    private Rigidbody _body;
+    private Rigidbody2D _body;
     private SpriteRenderer _sprite;
     private Animator _anim;
 
     // Start is called before the first frame update
     void Start()
     {
-        _body = GetComponent<Rigidbody>();
+        _body = GetComponent<Rigidbody2D>();
         _sprite = GetComponent<SpriteRenderer>();
         _anim = GetComponent<Animator>();
     }
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
     {
         for(int i = 0; i < GroundPivots.Length; i++)
         {
-            if (Physics.Raycast(GroundPivots[i].position, Vector3.down, 0.5f))
+            if (Physics2D.Raycast(GroundPivots[i].position, Vector3.down, 0.5f))
             {
                 return true;
             }
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Spike"))
         {
