@@ -10,6 +10,7 @@ public class WeaponController : MonoBehaviour
     public Transform firePointLeft;
     public Transform firePointRight;
     public GameObject bulletPrefab;
+    public float upTime = 1.0f;
     
     Transform activeGun;
     Transform activeFirePoint;
@@ -103,9 +104,9 @@ public class WeaponController : MonoBehaviour
             activeGun.gameObject.SetActive(true);
             gunActive = true;
             Instantiate(bulletPrefab, activeFirePoint.position, activeFirePoint.rotation);
-            Invoke("ShootBoolFalseSetter", 2.0f);
-            Invoke("ActiveGunCloser", 2.0f);
-            Invoke("GunActiveBoolFalse", 2.0f);
+            Invoke("ShootBoolFalseSetter", upTime);
+            Invoke("ActiveGunCloser", upTime);
+            Invoke("GunActiveBoolFalse", upTime);
         }
     }
 
