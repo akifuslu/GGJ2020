@@ -26,4 +26,15 @@ public class PlatformMover : MonoBehaviour
             if (_cur == Waypoints.Count) _cur = 0;
         }
     }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if(collision.collider.CompareTag("Player"))
+        {
+            var t = collision.gameObject.GetComponent<Transform>();
+            var dir = Waypoints[_cur].position - transform.position;
+            dir.Normalize();
+            t.Translate(dir * Speed * Time.deltaTime);
+        }
+    }
 }

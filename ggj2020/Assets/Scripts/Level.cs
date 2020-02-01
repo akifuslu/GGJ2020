@@ -6,11 +6,11 @@ using System;
 
 public class Level : MonoBehaviour
 {
-    public bool AllCollected { get => _counter == CollectCount;}
+    public bool AllCollected { get => Counter.Value == CollectCount;}
     public int CollectCount;
     public IntReactiveProperty Health;
+    public IntReactiveProperty Counter = new IntReactiveProperty(0);
     
-    private int _counter;
     private Vector3 _startPos;
     private Transform _player;
     private CameraController _camera;
@@ -18,19 +18,20 @@ public class Level : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _counter = 0;
+        Counter.Value = 0;
         _camera = FindObjectOfType<CameraController>();
         _player = FindObjectOfType<PlayerController>().transform;
         _startPos = _player.transform.position;
         FindObjectOfType<HealthView>().Bind(this);
+        FindObjectOfType<ShardView>().Bind(this);
         MessageBroker.Default.Receive<CollectedEvent>().Subscribe(ev => 
         {
-            _counter++;
+            Counter.Value++;
         });
 
         MessageBroker.Default.Receive<RepairCrackEvent>().Subscribe(ev =>
         {
-            if (_counter != CollectCount)
+            if (Counter.Value != CollectCount)
                 return;
 
             _player.GetComponent<PlayerController>().enabled = false;
@@ -59,8 +60,9 @@ public class Level : MonoBehaviour
             }
             else
             {
-                _player.transform.position = _startPos;
+                _player.position = _startPos;
                 _camera.Reset();
+                _player.GetComponent<PlayerController>().Reset();
             }
         });
     }    

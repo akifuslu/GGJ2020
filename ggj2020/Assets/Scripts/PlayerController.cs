@@ -50,6 +50,9 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Input.GetKeyDown("e") || Input.GetKeyDown("q"))
+            return;
+
         _isGrounded = CheckGrounded();
         float hort = Input.GetAxis("Horizontal");
         var velocity = _body.velocity;
@@ -92,6 +95,11 @@ public class PlayerController : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void Reset()
+    {
+        CurrentRoom = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
