@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System;
+using UnityEngine.UI;
 
 public class Level : MonoBehaviour
 {
@@ -22,10 +23,13 @@ public class Level : MonoBehaviour
     private IDisposable _d4;
     private IDisposable _d5;
 
+    private GameObject _hurt;
+
     // Start is called before the first frame update
     void Start()
     {
         Counter.Value = 0;
+        _hurt = FindObjectOfType<Canvas>().transform.Find("HurtFade").gameObject;
         _camera = FindObjectOfType<CameraController>();
         _player = FindObjectOfType<PlayerController>().transform;
         _startPos = _player.transform.position;
@@ -68,12 +72,14 @@ public class Level : MonoBehaviour
             }
             else
             {
+                _hurt.SetActive(true);
                 _camera.enabled = false;
                 _player.GetComponent<PlayerController>().enabled = false;
                 _player.GetComponent<Collider2D>().enabled = false;
                 Physics2D.gravity = Physics2D.gravity * 10;
                 Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(ev2 =>
                 {
+                    _hurt.SetActive(false);
                     Physics2D.gravity = Physics2D.gravity / 10;
                     _camera.enabled = true;
                     _player.GetComponent<PlayerController>().enabled = true;

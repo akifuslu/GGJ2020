@@ -2319,6 +2319,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 583499734550811432, guid: 6e35257aa72d0ef48a00dd39d8820f89,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.5058824
+      objectReference: {fileID: 0}
     - target: {fileID: 601098226368230550, guid: 6e35257aa72d0ef48a00dd39d8820f89,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -2378,6 +2383,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4468154016998579941, guid: 6e35257aa72d0ef48a00dd39d8820f89,
+        type: 3}
+      propertyPath: m_Name
+      value: HurtFade
       objectReference: {fileID: 0}
     - target: {fileID: 6218464029195782391, guid: 6e35257aa72d0ef48a00dd39d8820f89,
         type: 3}

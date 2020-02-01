@@ -19,6 +19,6 @@ public class ShardView : MonoBehaviour
 
     private void OnDestroy()
     {
-        _d.Dispose();
+        _d?.Dispose();
     }
 }

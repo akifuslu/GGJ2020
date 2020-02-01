@@ -47,6 +47,6 @@ public class EnemyController : MonoBehaviour
 
     private void OnDestroy()
     {
-        _d.Dispose();
+        _d?.Dispose();
     }
 }
