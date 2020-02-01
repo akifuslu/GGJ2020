@@ -7,8 +7,12 @@ public class WeaponController : MonoBehaviour
 {
     public Transform gunRight;
     public Transform gunLeft;
+    public Transform firePointLeft;
+    public Transform firePointRight;
+    public GameObject bulletPrefab;
     
     Transform activeGun;
+    Transform activeFirePoint;
     Vector3 mousePosition;
     Vector3 gunPosition;
     float angle;
@@ -42,12 +46,14 @@ public class WeaponController : MonoBehaviour
             {
                 gunRight.gameObject.SetActive(false);
                 activeGun = gunLeft;
+                activeFirePoint = firePointLeft;
             }
         
             if (Input.GetKey(KeyCode.D))
             {
                 gunLeft.gameObject.SetActive(false);
                 activeGun = gunRight;
+                activeFirePoint = firePointRight;
             }
         }
 
@@ -60,6 +66,7 @@ public class WeaponController : MonoBehaviour
                     gunRight.gameObject.SetActive(false);
                     activeGun = gunLeft;
                     activeGun.gameObject.SetActive(true);
+                    activeFirePoint = firePointLeft;
                 }
             }
             
@@ -70,6 +77,7 @@ public class WeaponController : MonoBehaviour
                     gunLeft.gameObject.SetActive(false);
                     activeGun = gunRight;
                     activeGun.gameObject.SetActive(true);
+                    activeFirePoint = firePointRight;
                 }
             }
         }
@@ -93,6 +101,8 @@ public class WeaponController : MonoBehaviour
         {
             activeGun.gameObject.SetActive(true);
             gunActive = true;
+            Instantiate(bulletPrefab, activeFirePoint.position, activeFirePoint.rotation);
+            gunActive = false;
         }
     }
 }
