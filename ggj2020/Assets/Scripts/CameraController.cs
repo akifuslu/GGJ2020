@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
@@ -9,15 +10,43 @@ public class CameraController : MonoBehaviour
     public int RoomCount;
     public IntReactiveProperty CurrentRoom;
     public float RoomOffset;
-
+    public List<AudioClip> Warps;
+    private AudioSource _audio;
     private float _targetPos;
     private LocationView _locationView;
+    private PlayerController _pl;
+    private CameraController _cm;
+    private SceneManagement _sm;
+    private WeaponController _wc;
+    private IDisposable _d;
 
     private void Start()
     {
+        _audio = GetComponent<AudioSource>();
         _targetPos = transform.position.x;
         _locationView = FindObjectOfType<LocationView>();
         _locationView.Bind(this);
+        _pl = FindObjectOfType<PlayerController>();
+        _cm = FindObjectOfType<CameraController>();
+        _sm = FindObjectOfType<SceneManagement>();
+        _wc = FindObjectOfType<WeaponController>();
+        _pl.enabled = false;
+        _cm.enabled = false;
+        _sm.enabled = false;
+        _wc.enabled = false;
+        transform.position = new Vector3(transform.position.x + (RoomCount-1) * RoomOffset, transform.position.y, transform.position.z);
+        _d = Observable.EveryUpdate().Subscribe(ev =>
+        {
+            transform.Translate(Vector3.left * Time.deltaTime * 5);
+            if (transform.position.x <= 0)
+            {
+                _d.Dispose();
+                _pl.enabled = true;
+                _cm.enabled = true;
+                _sm.enabled = true;
+                _wc.enabled = true;
+            }
+        });
     }
 
     // Update is called once per frame
@@ -25,12 +54,14 @@ public class CameraController : MonoBehaviour
     {
         if(Input.GetKeyDown("e") && CurrentRoom.Value < RoomCount - 1)
         {
+            _audio.PlayOneShot(Warps[0]);
             _targetPos += RoomOffset;
             CurrentRoom.Value++;
             MessageBroker.Default.Publish(new ChaosEvent() { Amount = 5});
         }
         else if(Input.GetKeyDown("q") && CurrentRoom.Value > 0)
         {
+            _audio.PlayOneShot(Warps[1]);
             _targetPos -= RoomOffset;
             CurrentRoom.Value--;
             MessageBroker.Default.Publish(new ChaosEvent() { Amount = 5 });
