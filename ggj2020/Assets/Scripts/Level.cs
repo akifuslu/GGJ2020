@@ -52,9 +52,9 @@ public class Level : MonoBehaviour
             var target = ev.Crack.position;
             target.y = transform.position.y;
             target.z = transform.position.z;
+            transform.position = target;
             _d = Observable.EveryUpdate().Subscribe(up => 
             {
-                transform.position = Vector3.Slerp(transform.position, target, Time.deltaTime);
                 Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 2, Time.deltaTime);
             });
             Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(ti =>

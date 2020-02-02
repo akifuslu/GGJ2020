@@ -9,9 +9,9 @@ public class SceneManagement : MonoBehaviour
     [SerializeField]
     bool newScene = false;
     [SerializeField]
-    float currentSec=0f;
+    float currentSec = 0f;
     int RoomCount = 2;
-    int CurrentRoom=0;
+    int CurrentRoom = 0;
     public int CollectCount;
     public bool AllCollected { get => Counter.Value == CollectCount; }
     public IntReactiveProperty Counter = new IntReactiveProperty(0);
@@ -37,7 +37,7 @@ public class SceneManagement : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         monsterLaugh = gameObject.GetComponents<AudioSource>()[0];
-        foreach(AudioSource a in gameObject.GetComponents<AudioSource>())
+        foreach (AudioSource a in gameObject.GetComponents<AudioSource>())
         {
             dimThemes.Add(a);
         }
@@ -48,7 +48,7 @@ public class SceneManagement : MonoBehaviour
     {
 
         Counter.Value = 0;
-        SceneManager.sceneLoaded += onSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         MessageBroker.Default.Receive<CollectedEvent>().Subscribe(ev =>
         {
@@ -102,20 +102,23 @@ public class SceneManagement : MonoBehaviour
         }
     }
 
-        void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         newScene = true;
-        if(scene.buildIndex<=5)
+        if (scene.buildIndex <= 4)
         {
             RoomCount = 2;
+            CollectCount = 1;
         }
-        if((5<scene.buildIndex)&&(scene.buildIndex <= 9))
+        if ((4 < scene.buildIndex) && (scene.buildIndex <= 7))
         {
             RoomCount = 3;
+            CollectCount = 2;
         }
-        if(9<scene.buildIndex&&(scene.buildIndex <= 13))
+        if (7 < scene.buildIndex && (scene.buildIndex <= 8))
         {
             RoomCount = 4;
+            CollectCount = 3;
         }
         Counter.Value = 0;
         if (scene.buildIndex > 0)
@@ -137,5 +140,5 @@ public class SceneManagement : MonoBehaviour
     {
         Application.Quit();
     }
-    
+
 }
