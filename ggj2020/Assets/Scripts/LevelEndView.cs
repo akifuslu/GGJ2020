@@ -43,7 +43,10 @@ public class LevelEndView : MonoBehaviour
                 if(ev.Success)
                 {
                     Header.text = "Time crack repaired!";
-                    NextLevel.gameObject.SetActive(true);
+                    if(!SceneManager.GetActiveScene().name.Equals("Level8"))
+                        NextLevel.gameObject.SetActive(true);
+                    else
+                        Header.text = "You repaired all time cracks!";
                     Success.SetActive(true);
                 }
                 else

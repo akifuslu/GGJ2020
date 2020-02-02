@@ -41,8 +41,6 @@ public class SceneManagement : MonoBehaviour
         {
             dimThemes.Add(a);
         }
-        dimThemes.RemoveAt(0);
-
     }
     private void Start()
     {
@@ -50,6 +48,7 @@ public class SceneManagement : MonoBehaviour
         Counter.Value = 0;
         SceneManager.sceneLoaded += OnSceneLoaded;
         dimThemes[0].Play();
+        MessageBroker.Default.Receive<PlayerDamagedEvent>().Subscribe(ev => { CurrentRoom = 0; PlayAmbient(); });
     }
 
     void Update()
@@ -64,9 +63,7 @@ public class SceneManagement : MonoBehaviour
             currentSec = dimThemes[CurrentRoom].time;
             dimThemes[CurrentRoom].Stop();
             CurrentRoom++;
-            dimThemes[CurrentRoom].time = currentSec;
-
-            dimThemes[CurrentRoom].Play();
+            PlayAmbient();
         }
         else if (Input.GetKeyDown("q") && CurrentRoom > 0)
         {
@@ -79,15 +76,20 @@ public class SceneManagement : MonoBehaviour
             dimThemes[CurrentRoom].Stop();
 
             CurrentRoom--;
-            dimThemes[CurrentRoom].time = currentSec;
-
-            dimThemes[CurrentRoom].Play();
+            PlayAmbient();
         }
+    }
+
+    private void PlayAmbient()
+    {
+        dimThemes[CurrentRoom].time = currentSec;
+        dimThemes[CurrentRoom].Play();
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         newScene = true;
+        CurrentRoom = 0;
         if (scene.buildIndex <= 4)
         {
             RoomCount = 2;
