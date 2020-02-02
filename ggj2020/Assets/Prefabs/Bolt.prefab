@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6641391689003580035}
   - component: {fileID: 5104567160663069682}
-  - component: {fileID: 409139227496215426}
+  - component: {fileID: 5411551269335468241}
   m_Layer: 0
   m_Name: monster_bolt
   m_TagString: Spike
@@ -82,19 +82,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &409139227496215426
-BoxCollider:
+--- !u!61 &5411551269335468241
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666350437029306190}
+  m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.061429977, y: 0.502368}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 17.94, y: 6.56}
+    newSize: {x: 17.94, y: 6.56}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 17.94, y: 6.5599995, z: 0.19999999}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 13.39411, y: 1.6702929}
+  m_EdgeRadius: 0
 --- !u!1 &4333957542140154606
 GameObject:
   m_ObjectHideFlags: 0
