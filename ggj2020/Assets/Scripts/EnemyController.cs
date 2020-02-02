@@ -11,16 +11,20 @@ public class EnemyController : MonoBehaviour
     public bool Fire;
     public GameObject BoltPrefab;
     public List<Transform> Waypoints;
+    public List<AudioClip> Sounds;
 
     private int _cur;
     private IDisposable _d;
-
+    private AudioSource _audio;
+    private IDisposable _d1;
 
     // Start is called before the first frame update
     void Start()
     {
+        _audio = GetComponent<AudioSource>();
         transform.position = Waypoints[0].position;
         _cur = 1;
+        float sec = UnityEngine.Random.Range(3, 10);
 
         if (Fire)
         {
@@ -30,6 +34,12 @@ public class EnemyController : MonoBehaviour
                 Destroy(go, 1);
             });
         }
+
+        _d1 = Observable.Interval(TimeSpan.FromSeconds(sec)).Subscribe(ev =>
+        {
+            int i = UnityEngine.Random.Range(0, Sounds.Count);
+            _audio.PlayOneShot(Sounds[i]);
+        });
     }
 
     // Update is called once per frame
@@ -48,6 +58,7 @@ public class EnemyController : MonoBehaviour
     private void OnDestroy()
     {
         _d?.Dispose();
+        _d1?.Dispose();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -49,24 +49,7 @@ public class SceneManagement : MonoBehaviour
 
         Counter.Value = 0;
         SceneManager.sceneLoaded += OnSceneLoaded;
-
-        MessageBroker.Default.Receive<CollectedEvent>().Subscribe(ev =>
-        {
-            Counter.Value++;
-        });
-
-        MessageBroker.Default.Receive<RepairCrackEvent>().Subscribe(rep =>
-        {
-            if (Counter.Value != CollectCount)
-                return;
-
-            Observable.Timer(TimeSpan.FromSeconds(2.5f)).Subscribe(ti =>
-            {
-                loadNextScene();
-            });
-        });
         dimThemes[0].Play();
-
     }
 
     void Update()
