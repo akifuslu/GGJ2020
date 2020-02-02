@@ -128,6 +128,14 @@ public class SceneManagement : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    
+    public void LoadLevel(int i)
+    {
+        SceneManager.LoadScene(i);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
     
 }
