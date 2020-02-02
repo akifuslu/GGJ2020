@@ -1,37 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
 {
+
+    public List<GameObject> Infos;
+
     private PlayerController _pl;
     private CameraController _cm;
     private SceneManagement _sm;
     private WeaponController _wc;
 
+    private int _c;
+
     // Start is called before the first frame update
     void Start()
     {
-        _pl = FindObjectOfType<PlayerController>();
-        _cm = FindObjectOfType<CameraController>();
-        _sm = FindObjectOfType<SceneManagement>();
-        _wc = FindObjectOfType<WeaponController>();
-        _pl.enabled = false;
-        _cm.enabled = false;
-        _sm.enabled = false;
-        _wc.enabled = false;
+        _c = -1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey("x"))
+        if(Input.GetKeyDown("x"))
         {
-            _pl.enabled = true;
-            _cm.enabled = true;
-            _sm.enabled = true;
-            _wc.enabled = true;
-            gameObject.SetActive(false);
+            if (_c == -1)
+            {
+                GetComponent<Image>().enabled = false;
+                _c++;
+                Infos[_c].SetActive(true);
+                Infos[_c].transform.parent.SetAsLastSibling();
+            }
+            else
+            {
+                Infos[_c].SetActive(false);
+                _c++;
+                if (_c == Infos.Count)
+                {
+                    transform.GetChild(0).gameObject.SetActive(false);
+                    transform.GetChild(1).gameObject.SetActive(false);
+                    enabled = false;
+                }
+                else
+                {
+                    Infos[_c].SetActive(true);
+                    Infos[_c].transform.parent.SetAsLastSibling();
+                }
+            }
         }
     }
 }

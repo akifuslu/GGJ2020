@@ -35,6 +35,9 @@ public class WeaponController : MonoBehaviour
 
     void Update()
     {
+        if (FindObjectOfType<Tutorial>() && FindObjectOfType<Tutorial>().enabled)
+            return;
+
         Aim();
         
         if (Input.GetMouseButtonDown(0))

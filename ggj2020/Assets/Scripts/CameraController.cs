@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour
         _d = Observable.EveryUpdate().Subscribe(ev =>
         {
             transform.Translate(Vector3.left * Time.deltaTime * 5);
-            if (transform.position.x <= 0)
+            if (transform.position.x <= -10)
             {
                 _d.Dispose();
                 _pl.enabled = true;
@@ -52,7 +52,10 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown("e") && CurrentRoom.Value < RoomCount - 1)
+        if (FindObjectOfType<Tutorial>() && FindObjectOfType<Tutorial>().enabled)
+            return;
+
+        if (Input.GetKeyDown("e") && CurrentRoom.Value < RoomCount - 1)
         {
             _audio.PlayOneShot(Warps[0]);
             _targetPos += RoomOffset;

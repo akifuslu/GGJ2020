@@ -53,6 +53,9 @@ public class SceneManagement : MonoBehaviour
 
     void Update()
     {
+        if (FindObjectOfType<Tutorial>() && FindObjectOfType<Tutorial>().enabled)
+            return;
+
         if (Input.GetKeyDown("e") && CurrentRoom < RoomCount - 1)
         {
             if (newScene)
