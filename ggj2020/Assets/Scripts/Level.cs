@@ -46,6 +46,7 @@ public class Level : MonoBehaviour
             if (Counter.Value != CollectCount)
                 return;
 
+            MessageBroker.Default.Publish(new LevelEndedEvent() { Success = true });
             _player.GetComponent<PlayerController>().enabled = false;
             _camera.enabled = false;
             var target = ev.Crack.position;
@@ -68,7 +69,9 @@ public class Level : MonoBehaviour
             Health.Value--;
             if(Health.Value <= 0)
             {
-                Debug.Log("GAME LOST");
+                MessageBroker.Default.Publish(new LevelEndedEvent() { Success = false});
+                _player.GetComponent<PlayerController>().enabled = false;
+                _camera.enabled = false;
             }
             else
             {
@@ -76,11 +79,9 @@ public class Level : MonoBehaviour
                 _camera.enabled = false;
                 _player.GetComponent<PlayerController>().enabled = false;
                 _player.GetComponent<Collider2D>().enabled = false;
-                Physics2D.gravity = Physics2D.gravity * 10;
                 Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(ev2 =>
                 {
                     _hurt.SetActive(false);
-                    Physics2D.gravity = Physics2D.gravity / 10;
                     _camera.enabled = true;
                     _player.GetComponent<PlayerController>().enabled = true;
                     _player.GetComponent<Collider2D>().enabled = true;
@@ -120,4 +121,9 @@ public class Level : MonoBehaviour
 public class ChaosEvent
 {
     public int Amount;
+}
+
+public class LevelEndedEvent
+{
+    public bool Success;
 }

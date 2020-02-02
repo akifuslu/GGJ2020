@@ -9,8 +9,13 @@ using UnityEngine.SceneManagement;
 public class LevelEndView : MonoBehaviour
 {
 
+    public Text Header;
+    public Button Retry;
     public Button NextLevel;
     public Button MainMenu;
+    public GameObject Success;
+    public GameObject Fail;
+
     private IDisposable _d;
 
     // Start is called before the first frame update
@@ -26,19 +31,30 @@ public class LevelEndView : MonoBehaviour
         {
             SceneManager.LoadScene("MainMenu");
         });
-
-        _d = MessageBroker.Default.Receive<RepairCrackEvent>().Subscribe(ev =>
+        Retry.onClick.AddListener(() =>
         {
-            if(FindObjectOfType<Level>().AllCollected)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        });
+
+        _d = MessageBroker.Default.Receive<LevelEndedEvent>().Subscribe(ev =>
+        {
+            Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(t =>
             {
-                Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(t =>
+                if(ev.Success)
                 {
-                    foreach (Transform c in transform)
-                    {
-                        c.gameObject.SetActive(true);
-                    }
-                });
-            }
+                    Header.text = "Time crack repaired!";
+                    NextLevel.gameObject.SetActive(true);
+                    Success.SetActive(true);
+                }
+                else
+                {
+                    Header.text = "You failed!";
+                    Retry.gameObject.SetActive(true);
+                    Fail.SetActive(true);
+                }
+                Header.gameObject.SetActive(true);
+                MainMenu.gameObject.SetActive(true);
+            });
         });
     }
 
