@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UniRx;
 using System;
-public class SceneManagement : MonoBehaviour
+public class SceneManagement : Singleton<SceneManagement>
 {
     [SerializeField]
     bool newScene = false;
@@ -18,25 +18,10 @@ public class SceneManagement : MonoBehaviour
     public AudioSource monsterLaugh;
     [SerializeField]
     List<AudioSource> dimThemes = new List<AudioSource>();
-    private static SceneManagement _instance;
 
-    public static SceneManagement Instance
+    protected override void Awake()
     {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = GameObject.FindObjectOfType<SceneManagement>();
-            }
-
-            return _instance;
-        }
-    }
-
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-        monsterLaugh = gameObject.GetComponents<AudioSource>()[0];
+        base.Awake();
         foreach (AudioSource a in gameObject.GetComponents<AudioSource>())
         {
             dimThemes.Add(a);
@@ -48,7 +33,7 @@ public class SceneManagement : MonoBehaviour
         Counter.Value = 0;
         SceneManager.sceneLoaded += OnSceneLoaded;
         dimThemes[0].Play();
-        MessageBroker.Default.Receive<PlayerDamagedEvent>().Subscribe(ev => { CurrentRoom = 0; PlayAmbient(); });
+        MessageBroker.Default.Receive<PlayerDamagedEvent>().Subscribe(ev => { dimThemes[CurrentRoom].Stop(); CurrentRoom = 0; PlayAmbient(); });
     }
 
     void Update()
@@ -128,5 +113,6 @@ public class SceneManagement : MonoBehaviour
     {
         Application.Quit();
     }
+    
 
 }
