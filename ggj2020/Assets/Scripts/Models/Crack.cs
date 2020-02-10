@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
@@ -13,12 +14,12 @@ public class Crack : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            MessageBroker.Default.Publish(new RepairCrackEvent() { Crack = transform, Fixed = Repaired});
+            MessageBus.Publish(new RepairCrackEvent() { Crack = transform, Fixed = Repaired});
         }
     }
 }
 
-public class RepairCrackEvent
+public class RepairCrackEvent : GameEvent
 {
     public Transform Crack;
     public Sprite Fixed;

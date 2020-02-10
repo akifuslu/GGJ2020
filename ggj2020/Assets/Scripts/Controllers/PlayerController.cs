@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.Scripts.Utils;
+using System;
 using UniRx;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-
-    public int RoomCount;
-    public int CurrentRoom;
-    public float RoomOffset;
     public float MoveScalar;
     public float JumpScalar;
     public float FallScalar;
@@ -23,9 +17,17 @@ public class PlayerController : MonoBehaviour
     private Animator _anim;
     private bool _onXray;
 
+    private int _roomCount;
+    private int _currentRoom;
+    private float _roomOffset;
+
     // Start is called before the first frame update
     void Start()
     {
+        var cam = FindObjectOfType<CameraController>();
+        _roomCount = cam.RoomCount;
+        _currentRoom = 0;
+        _roomOffset = cam.RoomOffset;
         _body = GetComponent<Rigidbody2D>();
         _sprite = GetComponent<SpriteRenderer>();
         _anim = GetComponent<Animator>();
@@ -36,15 +38,15 @@ public class PlayerController : MonoBehaviour
         if (FindObjectOfType<Tutorial>() && FindObjectOfType<Tutorial>().enabled)
             return;
 
-        if (Input.GetKeyDown("e") && CurrentRoom < RoomCount - 1)
+        if (Input.GetKeyDown("e") && _currentRoom < _roomCount - 1)
         {
-            transform.position = new Vector3(transform.position.x + RoomOffset, transform.position.y, transform.position.z);
-            CurrentRoom++;
+            transform.position = new Vector3(transform.position.x + _roomOffset, transform.position.y, transform.position.z);
+            _currentRoom++;
         }
-        else if (Input.GetKeyDown("q") && CurrentRoom > 0)
+        else if (Input.GetKeyDown("q") && _currentRoom > 0)
         {
-            transform.position = new Vector3(transform.position.x - RoomOffset, transform.position.y, transform.position.z);
-            CurrentRoom--;
+            transform.position = new Vector3(transform.position.x - _roomOffset, transform.position.y, transform.position.z);
+            _currentRoom--;
         }
 
         if(Input.GetKeyDown("x") && !_onXray)
@@ -52,14 +54,14 @@ public class PlayerController : MonoBehaviour
             _onXray = true;
             var go = Instantiate(Search);
             go.transform.position = transform.position;
-            MessageBroker.Default.Publish(new XRayEvent() { CurRoom = CurrentRoom });
-            MessageBroker.Default.Publish(new ChaosEvent() { Amount = 35 });
+            MessageBus.Publish(new XRayEvent() { CurRoom = _currentRoom });
+            MessageBus.Publish(new ChaosEvent() { Amount = 35 });
             Observable.Timer(TimeSpan.FromSeconds(2f)).Subscribe(ev => { _onXray = false; Destroy(go.gameObject); });
         }
 
         if (transform.position.y < 0) // fallen
         {
-            MessageBroker.Default.Publish(new PlayerDamagedEvent());
+            MessageBus.Publish(new PlayerDamagedEvent());
         }
     }
 
@@ -114,24 +116,24 @@ public class PlayerController : MonoBehaviour
 
     public void Reset()
     {
-        CurrentRoom = 0;
+        _currentRoom = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Spike"))
         {
-            MessageBroker.Default.Publish(new PlayerDamagedEvent());
+            MessageBus.Publish(new PlayerDamagedEvent());
         }
     }
 }
 
-public class PlayerDamagedEvent
+public class PlayerDamagedEvent : GameEvent
 {
 
 }
 
-public class XRayEvent
+public class XRayEvent : GameEvent
 {
     public int CurRoom;
 }

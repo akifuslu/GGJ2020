@@ -9,17 +9,16 @@ public class ChaosView : MonoBehaviour
     public Image Fill;
 
     private IDisposable _d;
-    private IDisposable _d2;
     private float _tar;
 
-    public void Bind(Level level)
+    public void Bind(Player level)
     {
-        _d = level.Chaos.Subscribe(ev =>
+        level.Chaos.Subscribe(ev =>
         {
             _tar = ev / 100f;
         });
 
-        _d2 = Observable.EveryUpdate().Subscribe(ev =>
+        _d = Observable.EveryUpdate().Subscribe(ev =>
         {
             Fill.fillAmount = Mathf.Lerp(Fill.fillAmount, _tar, Time.deltaTime * 2);
         });
@@ -28,6 +27,5 @@ public class ChaosView : MonoBehaviour
     private void OnDestroy()
     {
         _d?.Dispose();
-        _d2?.Dispose();
     }
 }

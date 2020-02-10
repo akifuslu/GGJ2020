@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Utils;
 
 public class LevelEndView : MonoBehaviour
 {
@@ -36,7 +35,7 @@ public class LevelEndView : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
 
-        _d = MessageBroker.Default.Receive<LevelEndedEvent>().Subscribe(ev =>
+        MessageBus.OnEvent<LevelEndedEvent>().Subscribe(ev =>
         {
             Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(t =>
             {
@@ -59,10 +58,5 @@ public class LevelEndView : MonoBehaviour
                 MainMenu.gameObject.SetActive(true);
             });
         });
-    }
-
-    private void OnDestroy()
-    {
-        _d?.Dispose();
-    }
+    }    
 }

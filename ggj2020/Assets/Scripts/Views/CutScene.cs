@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Game;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class CutScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        l = SceneManagement.Instance.GetComponents<AudioSource>().ToList();
+        l = SceneLoader.Instance.GetComponents<AudioSource>().ToList();
         foreach (var item in l)
         {
             item.mute = true;

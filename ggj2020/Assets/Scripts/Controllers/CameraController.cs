@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using Assets.Scripts.Game;
+using Assets.Scripts.Utils;
+using System;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class CameraController : MonoBehaviour
     private LocationView _locationView;
     private PlayerController _pl;
     private CameraController _cm;
-    private SceneManagement _sm;
+    private SceneLoader _sm;
     private WeaponController _wc;
     private IDisposable _d;
 
@@ -28,7 +29,7 @@ public class CameraController : MonoBehaviour
         _locationView.Bind(this);
         _pl = FindObjectOfType<PlayerController>();
         _cm = FindObjectOfType<CameraController>();
-        _sm = FindObjectOfType<SceneManagement>();
+        _sm = FindObjectOfType<SceneLoader>();
         _wc = FindObjectOfType<WeaponController>();
         _pl.enabled = false;
         _cm.enabled = false;
@@ -60,14 +61,14 @@ public class CameraController : MonoBehaviour
             _audio.PlayOneShot(Warps[0]);
             _targetPos += RoomOffset;
             CurrentRoom.Value++;
-            MessageBroker.Default.Publish(new ChaosEvent() { Amount = 5});
+            MessageBus.Publish(new ChaosEvent() { Amount = 5});
         }
         else if(Input.GetKeyDown("q") && CurrentRoom.Value > 0)
         {
             _audio.PlayOneShot(Warps[1]);
             _targetPos -= RoomOffset;
             CurrentRoom.Value--;
-            MessageBroker.Default.Publish(new ChaosEvent() { Amount = 5 });
+            MessageBus.Publish(new ChaosEvent() { Amount = 5 });
         }
         
         transform.position = new Vector3(Mathf.Lerp(transform.position.x, _targetPos, Time.deltaTime * 5), transform.position.y, transform.position.z);

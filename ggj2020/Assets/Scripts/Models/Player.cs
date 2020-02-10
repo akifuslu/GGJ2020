@@ -1,44 +1,41 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
+using Assets.Scripts.Utils;
 
-public class Level : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public bool AllCollected { get => Counter.Value == CollectCount;}
     public int CollectCount;
     public IntReactiveProperty Health;
-    public IntReactiveProperty Counter = new IntReactiveProperty(0);
-    public IntReactiveProperty Chaos = new IntReactiveProperty(0);
+    public IntReactiveProperty Counter;
+    public IntReactiveProperty Chaos;
 
     private Vector3 _startPos;
     private Transform _player;
     private CameraController _camera;
-    private IDisposable _d;
-    private IDisposable _d1;
-    private IDisposable _d2;
-    private IDisposable _d3;
-    private IDisposable _d4;
-    private IDisposable _d5;
-
-    private GameObject _hurt;
+    private IDisposable _d, _d1;
 
     // Start is called before the first frame update
     void Start()
     {
-        Counter.Value = 0;
-        _hurt = FindObjectOfType<Canvas>().transform.Find("HurtFade").gameObject;
+        // init properties 
+        Health = new IntReactiveProperty(4);
+        Counter = new IntReactiveProperty(0);
+        Chaos = new IntReactiveProperty(0);
+        
+        // bind ui view
+        FindObjectOfType<PlayerView>().Bind(this);
+
         _camera = FindObjectOfType<CameraController>();
         _player = FindObjectOfType<PlayerController>().transform;
         _startPos = _player.transform.position;
-        FindObjectOfType<HealthView>().Bind(this);
-        FindObjectOfType<ShardView>().Bind(this);
-        FindObjectOfType<ChaosView>().Bind(this);
-        _d1 = MessageBroker.Default.Receive<CollectedEvent>().Subscribe(ev => 
+        MessageBus.OnEvent<CollectedEvent>().Subscribe(ev => 
         {
             Counter.Value++;
         });
 
-        _d2 = MessageBroker.Default.Receive<RepairCrackEvent>().Subscribe(ev =>
+        MessageBus.OnEvent<RepairCrackEvent>().Subscribe(ev =>
         {
             if (Counter.Value != CollectCount)
                 return;
@@ -50,18 +47,18 @@ public class Level : MonoBehaviour
             target.y = transform.position.y;
             target.z = transform.position.z;
             transform.position = target;
-            _d = Observable.EveryUpdate().Subscribe(up => 
+            _d = Observable.EveryUpdate().Subscribe(up =>
             {
                 Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 2, Time.deltaTime);
             });
-            Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(ti =>
+            Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe((Action<long>)(ti =>
             {
                 ev.Crack.GetComponent<SpriteRenderer>().sprite = ev.Fixed;
                 _d.Dispose();
-            });
+            }));
         });
 
-        _d3 = MessageBroker.Default.Receive<PlayerDamagedEvent>().Subscribe(ev =>
+        MessageBus.OnEvent<PlayerDamagedEvent>().Subscribe(ev =>
         {
             Health.Value--;
             if(Health.Value <= 0)
@@ -72,13 +69,11 @@ public class Level : MonoBehaviour
             }
             else
             {
-                _hurt.SetActive(true);
                 _camera.enabled = false;
                 _player.GetComponent<PlayerController>().enabled = false;
                 _player.GetComponent<Collider2D>().enabled = false;
                 Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(ev2 =>
                 {
-                    _hurt.SetActive(false);
                     _camera.enabled = true;
                     _player.GetComponent<PlayerController>().enabled = true;
                     _player.GetComponent<Collider2D>().enabled = true;
@@ -89,7 +84,7 @@ public class Level : MonoBehaviour
             }
         });
 
-        _d4 = MessageBroker.Default.Receive<ChaosEvent>().Subscribe(ev =>
+        MessageBus.OnEvent<ChaosEvent>().Subscribe(ev =>
         {
             Chaos.Value += ev.Amount;
             if(Chaos.Value >= 100)
@@ -102,25 +97,21 @@ public class Level : MonoBehaviour
             }
         });
 
-        _d5 = Observable.Interval(TimeSpan.FromSeconds(.25f)).Subscribe(ev => { if(Chaos.Value > 0) Chaos.Value--; });
+        _d1 = Observable.Interval(TimeSpan.FromSeconds(.25f)).Subscribe(ev => { if(Chaos.Value > 0) Chaos.Value--; });
     }
 
     private void OnDestroy()
     {
         _d1?.Dispose();
-        _d2?.Dispose();
-        _d3?.Dispose();
-        _d4?.Dispose();
-        _d5?.Dispose();
     }
 }
 
-public class ChaosEvent
+public class ChaosEvent : GameEvent
 {
     public int Amount;
 }
 
-public class LevelEndedEvent
+public class LevelEndedEvent : GameEvent
 {
     public bool Success;
 }

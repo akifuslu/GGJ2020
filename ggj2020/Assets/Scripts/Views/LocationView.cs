@@ -12,7 +12,6 @@ public class LocationView : MonoBehaviour
     public GameObject LocationConnector;
 
     private List<Transform> _slots;
-    private IDisposable _d;
 
     public void Bind(CameraController controller)
     {
@@ -27,7 +26,7 @@ public class LocationView : MonoBehaviour
         }
         _slots.Add(Instantiate(EndLocationSlot, transform).transform);
 
-        _d = controller.CurrentRoom.Subscribe(cur =>
+        controller.CurrentRoom.Subscribe(cur =>
         {
             foreach (var slot in _slots)
             {
@@ -35,10 +34,5 @@ public class LocationView : MonoBehaviour
             }
             _slots[cur].GetChild(0).gameObject.SetActive(true);
         });   
-    }
-
-    private void OnDestroy()
-    {
-        _d?.Dispose();
-    }
+    }    
 }

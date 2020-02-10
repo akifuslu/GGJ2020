@@ -12,9 +12,8 @@ public class HealthView : MonoBehaviour
 
     [SerializeField]
     private List<Image> _hearts;
-    private IDisposable _d;
 
-    public void Bind(Level level)
+    public void Bind(Player level)
     {
         _hearts = new List<Image>();
         foreach(Image img in gameObject.GetComponentsInChildren<Image>())
@@ -23,7 +22,7 @@ public class HealthView : MonoBehaviour
         }
         _hearts.RemoveAt(0);
 
-        _d = level.Health.Subscribe(ev => 
+        level.Health.Subscribe(ev => 
         {
             if(ev < _hearts.Count && _hearts.Count > 0 && ev>=0)
             {
@@ -48,10 +47,5 @@ public class HealthView : MonoBehaviour
         }
         img.gameObject.SetActive((sign>0)? true:false);
         img.fillAmount = 1.0f;
-    }
-
-    private void OnDestroy()
-    {
-        _d?.Dispose();
-    }
+    }    
 }

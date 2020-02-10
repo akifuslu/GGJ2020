@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Game;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ public class Tutorial : MonoBehaviour
 
     private PlayerController _pl;
     private CameraController _cm;
-    private SceneManagement _sm;
+    private SceneLoader _sm;
     private WeaponController _wc;
 
     private int _c;

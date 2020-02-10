@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using Assets.Scripts.Utils;
 
 public class Room : MonoBehaviour
 {
@@ -11,13 +12,12 @@ public class Room : MonoBehaviour
     public int RoomId;
 
     private List<PlatformEffector2D> _platforms;
-    private IDisposable _d;
 
     // Start is called before the first frame update
     void Start()
     {
         _platforms = GetComponentsInChildren<PlatformEffector2D>().ToList();
-        _d = MessageBroker.Default.Receive<XRayEvent>().Subscribe(ev =>
+        MessageBus.OnEvent<XRayEvent>().Subscribe(ev =>
         {
             if (ev.CurRoom == RoomId)
                 return;
@@ -35,10 +35,5 @@ public class Room : MonoBehaviour
             }
 
         });
-    }
-
-    void OnDestroy()
-    {
-        _d?.Dispose();
-    }
+    }    
 }
